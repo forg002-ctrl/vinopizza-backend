@@ -1,4 +1,3 @@
-import Products from '../models/ProductModel.js';
 import ProductService from '../services/ProductService.js';
 
 class ProductController{

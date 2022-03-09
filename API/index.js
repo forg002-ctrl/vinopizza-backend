@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import fileUpload from "express-fileupload";
 import dotenv from "dotenv/config";
 import productRouter from './routers/product.js';
+import categoryRouter from './routers/category.js';
 import homeRouter from './routers/home.js';
 
 const app = express();
@@ -12,6 +13,8 @@ const DB = process.env.Database_URL;
 
 app.use(bodyParser.json());
 app.use(fileUpload({}))
+app.use
+app.use('/category', categoryRouter);
 app.use('/product', productRouter);
 app.use('/', homeRouter);
 

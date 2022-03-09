@@ -15,6 +15,7 @@ const Order = new mongoose.Schema({
         },
         phone:{type:String, required:true}
     },
+    additionalInfo:{type:String, required:true},
     items: [
         {
             name:{type:String, required:true},
