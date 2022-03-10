@@ -13,7 +13,6 @@ const DB = process.env.Database_URL;
 
 app.use(bodyParser.json());
 app.use(fileUpload({}))
-app.use
 app.use('/category', categoryRouter);
 app.use('/product', productRouter);
 app.use('/', homeRouter);

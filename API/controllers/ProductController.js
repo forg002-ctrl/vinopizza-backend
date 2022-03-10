@@ -3,7 +3,8 @@ import ProductService from '../services/ProductService.js';
 class ProductController{
     async create(req, res) {
         try {
-            const products = await ProductService.create(req.body);
+            req.body.translation = JSON.parse(req.body.translation); //used to test form-data request from POSTMAN
+            const products = await ProductService.create(req.body, req.files.image);
             res.json(products);
         } catch(error) {
             res.status(500).json(error.message);

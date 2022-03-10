@@ -1,8 +1,10 @@
 import Products from '../models/ProductModel.js';
+import FileService from './FileService.js';
 
 class ProductService{
-    async create(product, picture) {
-        const createdProducts = await Products.create(product);
+    async create(product, image) {
+        const fileName = FileService.saveFile(image);
+        const createdProducts = await Products.create({...product, image:fileName});
         return createdProducts;
     }
 
@@ -33,6 +35,7 @@ class ProductService{
             throw new Error('не указан ID');
         }
         const product = await Products.findByIdAndDelete(id);
+        FileService.deleteFile(product.image);
         return product;
     }
 }
