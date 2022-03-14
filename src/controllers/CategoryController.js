@@ -40,9 +40,9 @@ class CategoryController {
 
   async delete(req, res) {
     try {
-
-        //TODO
+      console.log(req.params.id);
       const category = await CategoryService.delete(req.params.id);
+      console.log(category);
       return res.json(category);
     } catch (error) {
       res.status(500).json(error.message);

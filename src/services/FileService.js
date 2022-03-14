@@ -16,7 +16,7 @@ class FileService{
 
     deleteFile(fileName){
         try{
-            const filePath = path.resolve('../API/static', fileName);
+            const filePath = path.resolve('../src/static', fileName);
             fs.unlink(filePath, function(err){
                 if(err){
                     console.log(err);

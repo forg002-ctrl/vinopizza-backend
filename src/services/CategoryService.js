@@ -29,7 +29,6 @@ class CategoryService {
     
     const oldCategory = await Categories.findById(category._id);    
 
-
     if(oldCategory.translation.ru.name != category.translation.ru.name){
         const productsToChange = await Products.find(oldCategory.translation.ru);
         productsToChange.forEach(product => {
@@ -39,7 +38,7 @@ class CategoryService {
     }
 
     if(oldCategory.translation.ro.name != category.translation.ro.name){
-        const productsToChange = await Products.find(oldCategory.ru);
+        const productsToChange = await Products.find(oldCategory.translation.ru);
         productsToChange.forEach(product => {
             product.translation.ro.category = category.translation.ro.name;
             ProductService.update(product);
@@ -59,8 +58,18 @@ class CategoryService {
     if (!id) {
       throw new Error("не указан ID");
     }
-    const product = await Categories.findByIdAndDelete(id);
-    return product;
+
+    const categoryToDelete = await Categories.findByIdAndDelete(id);  
+    console.log(categoryToDelete);
+
+      const productsToDelete = await Products.find(categoryToDelete.translation.ro);
+      productsToDelete.forEach(product => {
+          ProductService.delete(product._id);
+      });
+
+      console.log(productsToDelete);
+
+    return categoryToDelete;
   }
 }
 
