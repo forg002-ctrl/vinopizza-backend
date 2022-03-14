@@ -1,0 +1,20 @@
+<<<<<<< HEAD:src/routers/home.js
+import express from "express";
+
+const router = express.Router();
+
+router.use('/', (req, res) => {
+    res.send("Homepage");
+});     
+
+=======
+import express from "express";
+import MenuController from "../controllers/MenuController.js";
+
+
+const router = express.Router();
+
+router.get('/', MenuController.getAll);
+
+>>>>>>> 93e73274f71ca51dc2e4638752f4a0079e860565:API/routers/home.js
+export default router;

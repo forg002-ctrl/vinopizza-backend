@@ -7,17 +7,17 @@ import productRouter from "./routers/product.js";
 import homeRouter from "./routers/home.js";
 
 const app = express();
-const PORT = process.env.Port;
-const DB = process.env.Database_URL;
+const PORT = process.env.PORT;
+const DB_URL = process.env.DB_URL_URL;
 
 app.use(bodyParser.json());
 app.use(fileUpload({}));
-app.use("/product", productRouter);
+app.use("/products", productRouter);
 app.use("/", homeRouter);
 
 async function startApp() {
   try {
-    await mongoose.connect(DB, {
+    await mongoose.connect(DB_URL, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });
