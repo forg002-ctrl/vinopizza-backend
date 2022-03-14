@@ -4,16 +4,16 @@ import mongoose from "mongoose";
 import fileUpload from "express-fileupload";
 import dotenv from "dotenv/config";
 import productRouter from "./routers/product.js";
-import homeRouter from "./routers/home.js";
+import categoryRouter from "./routers/category.js"
 
 const app = express();
-const PORT = process.env.PORT;
-const DB_URL = process.env.DB_URL_URL;
+const PORT = process.env.Port;
+const DB_URL = process.env.Database_URL;
 
 app.use(bodyParser.json());
 app.use(fileUpload({}));
-app.use("/products", productRouter);
-app.use("/", homeRouter);
+app.use("/api/v1/products", productRouter);
+app.use("/api/v1/categories", categoryRouter);
 
 async function startApp() {
   try {

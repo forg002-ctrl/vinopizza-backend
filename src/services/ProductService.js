@@ -1,43 +1,43 @@
-import Products from "../models/ProductModel.js";
+import Products from '../models/ProductModel.js';
+import FileService from './FileService.js';
 
-class ProductService {
-  async create(product, picture) {
-    const createdProducts = await Products.create(product);
-    return createdProducts;
-  }
-
-  async getAll() {
-    const products = await Products.find();
-    return products;
-  }
-
-  async getOne(id) {
-    if (!id) {
-      throw new Error("не указан ID");
+class ProductService{
+    async create(product, image) {
+        const fileName = FileService.saveFile(image);
+        const createdProducts = await Products.create({...product, image:fileName});
+        return createdProducts;
     }
-    const product = await Products.findById(id);
-    return product;
-  }
-
-  async update(product) {
-    if (!product._id) {
-      throw new Error("не указан ID");
+    
+    async getAll() {
+        const products = await Products.find();
+        return products;
     }
-    const updatedProduct = await Products.findByIdAndUpdate(
-      product._id,
-      product,
-      { new: true }
-    );
-    return updatedProduct;
-  }
 
-  async delete(id) {
-    if (!id) {
-      throw new Error("не указан ID");
+    async getOne(id) {
+        if(!id){
+            throw new Error('не указан ID');
+        }
+        const product = await Products.findById(id);
+        return product;
     }
-    const product = await Products.findByIdAndDelete(id);
-    return product;
-  }
+
+    async update(product) {
+        if(!product._id){
+            throw new Error('не указан ID');
+        }
+        const updatedProduct = await Products.findByIdAndUpdate(product._id, product, {new: true});
+        return updatedProduct;
+    }
+    
+
+    async delete(id) {
+        if(!id){
+            throw new Error('не указан ID');
+        }
+        const product = await Products.findByIdAndDelete(id);
+        FileService.deleteFile(product.image);
+        return product;
+    }
 }
 
 export default new ProductService();

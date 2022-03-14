@@ -1,9 +1,9 @@
 import express from "express";
+import MenuController from "../controllers/MenuController.js";
+
 
 const router = express.Router();
 
-router.use('/', (req, res) => {
-    res.send("Homepage");
-});     
+router.get('/', MenuController.getAll);
 
 export default router;
