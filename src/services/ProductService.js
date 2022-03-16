@@ -5,11 +5,13 @@ class ProductService{
     async create(product, image) {
         const fileName = FileService.saveFile(image);
         const createdProducts = await Products.create({...product, image:fileName});
+        
         return createdProducts;
     }
     
     async getAll() {
         const products = await Products.find();
+        
         return products;
     }
 
@@ -18,6 +20,7 @@ class ProductService{
             throw new Error('не указан ID');
         }
         const product = await Products.findById(id);
+        
         return product;
     }
 
@@ -26,6 +29,7 @@ class ProductService{
             throw new Error('не указан ID');
         }
         const updatedProduct = await Products.findByIdAndUpdate(product._id, product, {new: true});
+        
         return updatedProduct;
     }
     
@@ -36,6 +40,7 @@ class ProductService{
         }
         const product = await Products.findByIdAndDelete(id);
         FileService.deleteFile(product.image);
+        
         return product;
     }
 }

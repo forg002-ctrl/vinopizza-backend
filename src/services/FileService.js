@@ -8,6 +8,7 @@ class FileService{
             const fileName = uuid.v4() + ".jpg";
             const filePath = path.resolve('../src/static', fileName);
             file.mv(filePath);
+            
             return fileName;
         } catch(error){
             console.log(error);

@@ -5,11 +5,13 @@ import ProductService from "../services/ProductService.js"
 class CategoryService {
   async create(product) {
     const createdCategories = await Categories.create(product);
+    
     return createdCategories;
   }
 
   async getAll() {
     const categories = await Categories.find();
+    
     return categories;
   }
 
@@ -18,11 +20,11 @@ class CategoryService {
       throw new Error("не указан ID");
     }
     const category = await Categories.findById(id);
+    
     return category;
   }
 
   async update(category) {
-    //TODO - if category name was changed -> change the "сategory" in all the products with this "old category"
     if (!category._id) {
       throw new Error("не указан ID");
     }
@@ -50,24 +52,27 @@ class CategoryService {
         category,
         { new: true }
     );
-    return updatedProduct;
+
+    return updatedCategory;
   }
 
   async delete(id) {
-    //TODO - if category name is deleted-> delete all the products with this "category"
     if (!id) {
       throw new Error("не указан ID");
     }
 
     const categoryToDelete = await Categories.findByIdAndDelete(id);  
-    console.log(categoryToDelete);
+    const productsToDelete = await Products.find(categoryToDelete.translation.ro);
 
-      const productsToDelete = await Products.find(categoryToDelete.translation.ro);
-      productsToDelete.forEach(product => {
+    productsToDelete.forEach(product => {
           ProductService.delete(product._id);
-      });
+    });
 
-      console.log(productsToDelete);
+    // productsToDelete = await Products.find(categoryToDelete.translation.ru);
+
+    // productsToDelete.forEach(product => {
+    //   ProductService.delete(product._id);
+    // });
 
     return categoryToDelete;
   }

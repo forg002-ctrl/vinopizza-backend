@@ -10,7 +10,6 @@ const Products = new mongoose.Schema({
       category: { type: String, required: true },
       metrics: { type: String, required: true },
     },
-
     ro: {
       name: { type: String, required: true },
       description: { type: String, required: true },
