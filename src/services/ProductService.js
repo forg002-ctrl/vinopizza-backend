@@ -1,25 +1,25 @@
-import Products from '../models/ProductModel.js';
+import Product from '../models/ProductModel.js';
 import FileService from './FileService.js';
 
 class ProductService{
     async create(product, image) {
         const fileName = FileService.saveFile(image);
-        const createdProducts = await Products.create({...product, image:fileName});
+        const createdProducts = await Product.create({...product, image:fileName});
         
         return createdProducts;
     }
     
     async getAll() {
-        const products = await Products.find();
+        const Product = await Product.find();
         
-        return products;
+        return Product;
     }
 
     async getOne(id) {
         if(!id){
             throw new Error('не указан ID');
         }
-        const product = await Products.findById(id);
+        const product = await Product.findById(id);
         
         return product;
     }
@@ -28,7 +28,7 @@ class ProductService{
         if(!product._id){
             throw new Error('не указан ID');
         }
-        const updatedProduct = await Products.findByIdAndUpdate(product._id, product, {new: true});
+        const updatedProduct = await Product.findByIdAndUpdate(product._id, product, {new: true});
         
         return updatedProduct;
     }
@@ -38,7 +38,7 @@ class ProductService{
         if(!id){
             throw new Error('не указан ID');
         }
-        const product = await Products.findByIdAndDelete(id);
+        const product = await Product.findByIdAndDelete(id);
         FileService.deleteFile(product.image);
         
         return product;

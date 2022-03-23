@@ -13,6 +13,7 @@ const PORT = process.env.Port;
 const DB_URL = process.env.Database_URL;
 
 app.use(bodyParser.json());
+app.use(express.static('static'));
 app.use(fileUpload({}));
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/categories", categoryRouter);

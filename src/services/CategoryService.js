@@ -1,5 +1,5 @@
 import Categories from "../models/CategoryModel.js";
-import Products from "../models/ProductModel.js"
+import Product from "../models/ProductModel.js"
 import ProductService from "../services/ProductService.js"
 
 class CategoryService {
@@ -32,7 +32,7 @@ class CategoryService {
     const oldCategory = await Categories.findById(category._id);    
 
     if(oldCategory.translation.ru.name != category.translation.ru.name){
-        const productsToChange = await Products.find(oldCategory.translation.ru);
+        const productsToChange = await Product.find(oldCategory.translation.ru);
         productsToChange.forEach(product => {
             product.translation.ru.category = category.translation.ru.name;
             ProductService.update(product);
@@ -40,7 +40,7 @@ class CategoryService {
     }
 
     if(oldCategory.translation.ro.name != category.translation.ro.name){
-        const productsToChange = await Products.find(oldCategory.translation.ru);
+        const productsToChange = await Product.find(oldCategory.translation.ru);
         productsToChange.forEach(product => {
             product.translation.ro.category = category.translation.ro.name;
             ProductService.update(product);
@@ -62,13 +62,13 @@ class CategoryService {
     }
 
     const categoryToDelete = await Categories.findByIdAndDelete(id);  
-    const productsToDelete = await Products.find(categoryToDelete.translation.ro);
+    const productsToDelete = await Product.find(categoryToDelete.translation.ro);
 
     productsToDelete.forEach(product => {
           ProductService.delete(product._id);
     });
 
-    // productsToDelete = await Products.find(categoryToDelete.translation.ru);
+    // productsToDelete = await Product.find(categoryToDelete.translation.ru);
 
     // productsToDelete.forEach(product => {
     //   ProductService.delete(product._id);

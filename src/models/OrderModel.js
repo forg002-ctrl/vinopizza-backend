@@ -7,7 +7,7 @@ const Order = new mongoose.Schema({
     city: { type: String, required: true },
     address: {
       street: { type: String, required: true },
-      houseNumber: { type: Number, required: false},
+      houseNumber: { type: Number, required: true},
       flat: { type: Number, required: false},
       entrance: { type: Number, required: false},
       floor: { type: Number, required: false},
@@ -22,9 +22,9 @@ const Order = new mongoose.Schema({
       amount: { type: Number, required: true}
     },
   ],
-  paymentMethod: { type: String, required: true}, enum: ['Cash', 'Online', 'Card'], default:'Cash',
+  paymentMethod: { type: String, enum:['Cash', 'Online', 'Card'], required: true, default:'Cash'},
   total: { type: Number, required: true },
-  status: { type: Number, required: true, default: 0} //Where 0 - order is made by user, 1 - is accept and verified by worker, 2 - is made    
+  status: { type: String, enum:['Pending', 'In Procces', 'Done'], required: true, default: 'Pending'} //Where 0 - order is made by user, 1 - is accept and verified by worker, 2 - is made    
 });
 
 export default mongoose.model("Order", Order);
