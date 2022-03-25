@@ -10,9 +10,9 @@ class ProductService{
     }
     
     async getAll() {
-        const Product = await Product.find();
+        const products = await Product.find();
         
-        return Product;
+        return products;
     }
 
     async getOne(id) {

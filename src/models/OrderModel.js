@@ -24,7 +24,7 @@ const Order = new mongoose.Schema({
   ],
   paymentMethod: { type: String, enum:['Cash', 'Online', 'Card'], required: true, default:'Cash'},
   total: { type: Number, required: true },
-  status: { type: String, enum:['Pending', 'In Procces', 'Done'], required: true, default: 'Pending'} //Where 0 - order is made by user, 1 - is accept and verified by worker, 2 - is made    
-});
+  status: { type: String, enum:['Pending', 'In Procces', 'Done'], required: true, default: 'Pending'}
+}); 
 
 export default mongoose.model("Order", Order);
