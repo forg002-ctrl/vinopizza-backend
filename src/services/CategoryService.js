@@ -1,10 +1,12 @@
 import Categories from "../models/CategoryModel.js";
-import Product from "../models/ProductModel.js"
-import ProductService from "../services/ProductService.js"
+import Meal from "../models/MealModel.js";
+import Drink from "../models/DrinkModel.js";
+import MealService from "../services/MealService.js";
+import DrinkService from "../services/DrinkService.js";
 
 class CategoryService {
-  async create(product) {
-    const createdCategories = await Categories.create(product);
+  async create(category) {
+    const createdCategories = await Categories.create(category);
     
     return createdCategories;
   }
@@ -32,19 +34,41 @@ class CategoryService {
     const oldCategory = await Categories.findById(category._id);    
 
     if(oldCategory.translation.ru.name != category.translation.ru.name){
-        const productsToChange = await Product.find(oldCategory.translation.ru);
-        productsToChange.forEach(product => {
-            product.translation.ru.category = category.translation.ru.name;
-            ProductService.update(product);
-        }); 
+        const mealsToChange = await Meal.find(oldCategory.translation.ru);
+        const drinksToChange = await Drink.find(oldCategory.translation.ru)
+
+        if(mealsToChange){
+          mealsToChange.forEach(meal => {
+            meal.translation.ru.category = category.translation.ru.name;
+            MealService.update(meal);
+          }); 
+        }
+
+        if(drinksToChange){
+          drinksToChange.forEach(drink => {
+            drink.translation.ru.category = category.translation.ru.name;
+            DrinkService.update(drink);
+          })
+        }
     }
 
     if(oldCategory.translation.ro.name != category.translation.ro.name){
-        const productsToChange = await Product.find(oldCategory.translation.ru);
-        productsToChange.forEach(product => {
-            product.translation.ro.category = category.translation.ro.name;
-            ProductService.update(product);
-        });
+      const mealsToChange = await Meal.find(oldCategory.translation.ro);
+      const drinksToChange = await Drink.find(oldCategory.translation.ro)
+
+      if(mealsToChange){
+        mealsToChange.forEach(meal => {
+          meal.translation.ro.category = category.translation.ro.name;
+          MealService.update(meal);
+        }); 
+      }
+
+      if(drinksToChange){
+        drinksToChange.forEach(drink => {
+          drink.translation.ro.category = category.translation.ro.name;
+          DrinkService.update(drink);
+        })
+      }
     }
 
     const updatedCategory = await Categories.findByIdAndUpdate(
@@ -62,17 +86,20 @@ class CategoryService {
     }
 
     const categoryToDelete = await Categories.findByIdAndDelete(id);  
-    const productsToDelete = await Product.find(categoryToDelete.translation.ro);
+    const mealsToDelete = await Meal.find(categoryToDelete.translation.ro);
+    const drinksToDelete = await Drink.find(categoryToDelete.translation.ro);
 
-    productsToDelete.forEach(product => {
-          ProductService.delete(product._id);
-    });
+    if(mealsToDelete){
+      mealsToDelete.forEach(meal => {
+        MealService.delete(meal._id)
+      })
+    }
 
-    // productsToDelete = await Product.find(categoryToDelete.translation.ru);
-
-    // productsToDelete.forEach(product => {
-    //   ProductService.delete(product._id);
-    // });
+    if(drinksToDelete){
+      drinksToDelete.forEach(meal => {
+        DrinkService.delete(meal._id)
+      })
+    }
 
     return categoryToDelete;
   }

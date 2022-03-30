@@ -1,9 +1,8 @@
 import OrderSerivce from '../services/OrderService.js';
 
 class OrderController{
-    async create(req, res) {
+    async create(req, res, next) {
         try {
-            // req.body.translation = JSON.parse(req.body.translation); //used to test form-data request from POSTMAN
             const order = await OrderSerivce.create(req.body);
             
             return res.json(order);
@@ -12,7 +11,7 @@ class OrderController{
         }
     }
 
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try {
             const orders = await OrderSerivce.getAll();
             
@@ -22,7 +21,7 @@ class OrderController{
         }
     }
 
-    async getOne(req, res) {
+    async getOne(req, res, next) {
         try {
             const order = await OrderSerivce.getOne(req.params.id);
             
@@ -32,7 +31,7 @@ class OrderController{
         }
     }
 
-    async update(req, res) {
+    async update(req, res, next) {
         try {
             const updatedOrder = await OrderSerivce.update(req.body);
             
@@ -42,7 +41,7 @@ class OrderController{
         }
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         try {
             const order = await OrderSerivce.delete(req.params.id);
            

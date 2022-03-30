@@ -5,7 +5,11 @@ class ApiError{
     }
 
     static badRequest(msg){
-        return new ApiError(400, msg);
+        return new ApiError(404, msg);
+    }
+
+    static unauthorizedUser(){
+        return new ApiError(401, "You don't have access to this page, because you're unauthorized user.");
     }
 
     static internal(msg){

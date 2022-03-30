@@ -1,13 +1,11 @@
 import MenuService from '../services/MenuService.js';
 
 class MenuController{
-    async getAll(req, res) {
-        try {
-            const categories = await MenuService.getAll();
-            return res.json(categories);
-        } catch(error) {
-            res.status(500).json(error.message);
-        }
+    async getAll(req, res, next) {
+        const menu = await MenuService.getAll();
+
+        res.status(200);
+        return res.json(menu);
     }
 }
 
