@@ -1,12 +1,13 @@
 import express from "express";
 import MealController from "../controllers/MealController.js";
+import authMiddleware from "../midllewares/auth-middleware.js";
 
 const router = express.Router();
 
-router.post('/', MealController.create);
+router.post('/', authMiddleware, MealController.create);
 router.get('/', MealController.getAll);
 router.get('/:id', MealController.getOne);
-router.put('/', MealController.update);
-router.delete('/:id', MealController.delete);
+router.put('/', authMiddleware, MealController.update);
+router.delete('/:id', authMiddleware, MealController.delete);
 
 export default router;  
