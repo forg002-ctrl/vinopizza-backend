@@ -11,7 +11,7 @@ import categoryRouter from "./routers/category.js";
 import orderRouter from "./routers/orders.js";
 import authorizationRouter from "./routers/authorization.js"
 
-import apiErrorHandler from "./error/api-error-handler.js";
+import apiErrorHandler from "./midllewares/error-middleware.js";
 
 const app = express();
 const PORT = process.env.Port;
@@ -42,7 +42,7 @@ async function startApp() {
       console.log(`server running on port http://localhost:${PORT}`)
     );
   } catch (error) {
-    console.log(error);
+    console.log(error); 
   }
 }
 

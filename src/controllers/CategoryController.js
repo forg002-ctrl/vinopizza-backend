@@ -1,4 +1,5 @@
 import CategoryService from "../services/CategoryService.js";
+import ApiError from "../exceptions/ApiError.js"
 
 class CategoryController {
   async create(req, res, next) {

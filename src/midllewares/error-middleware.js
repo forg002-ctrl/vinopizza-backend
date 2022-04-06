@@ -1,4 +1,4 @@
-import ApiError from "./ApiError.js";
+import ApiError from "../exceptions/ApiError.js";
 
 function apiErrorHandler(err, req, res, next){
     console.error(err);

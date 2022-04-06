@@ -9,7 +9,7 @@ class ApiError{
     }
 
     static unauthorizedUser(){
-        return new ApiError(401, "You don't have access to this page, because you're unauthorized user.");
+        return new ApiError(401, "You don't have access to this page, because you're an unauthorized user.");
     }
 
     static internal(msg){

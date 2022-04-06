@@ -1,13 +1,23 @@
 import MealService from '../services/MealService.js';
-import ApiError from '../error/ApiError.js';
+import ApiError from "../exceptions/ApiError.js"
 
 class MealController{
     async create(req, res, next) {
         const { price, translation, recommendedVines } = req.body;
         const image = req.files; 
-        
-        if(!price || !translation || !recommendedVines){
-            next(ApiError.badRequest('You have not send all the necessary data'));
+
+        if(!price){
+            next(ApiError.badRequest("You haven't sent the field 'price'"));
+            return;
+        }
+
+        if(!translation){
+            next(ApiError.badRequest("You haven't sent the field 'translation'"));
+            return;
+        }
+
+        if(!recommendedVines){
+            next(ApiError.badRequest("You haven't sent the field 'recommendedVines'"));
             return;
         }
 
@@ -47,8 +57,13 @@ class MealController{
     async update(req, res, next) {
         const { price, translation } = req.body;
         
-        if(!price || !translation){
-            next(ApiError.badRequest('You have not send all the necessary data'));
+        if(!price){
+            next(ApiError.badRequest("You haven't sent the field 'price'"));
+            return;
+        }
+
+        if(!translation){
+            next(ApiError.badRequest("You haven't sent the field 'translation'"));
             return;
         }
 

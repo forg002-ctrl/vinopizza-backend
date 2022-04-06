@@ -5,6 +5,7 @@ import fs from "fs";
 class FileService{
     saveFile(file){
         try{
+            console.log(file);
             const fileName = uuid.v4() + ".jpg";
             const filePath = path.resolve('../src/static', fileName);
             file.mv(filePath);

@@ -1,17 +1,17 @@
 import DrinkService from '../services/DrinkService.js';
-import ApiError from '../error/ApiError.js';
+import ApiError from "../exceptions/ApiError.js"
 
 class DrinkController{
     async create(req, res, next) {
-        const { price, translation, recommendedDrinks } = req.body;
+        const { price, translation } = req.body;
         
-        if(!price || !translation || !recommendedDrinks){
+        if(!price || !translation){
             next(ApiError.badRequest('You have not send all the necessary data'));
             return;
         }
 
         req.body.translation = JSON.parse(req.body.translation);  //used to test form-data request from POSTMAN
-        const drinks = await DrinkService.create(req.body);
+        const drinks = await DrinkService.create(req.body, req.files.image);
 
         res.status(200);
         return res.json(drinks);

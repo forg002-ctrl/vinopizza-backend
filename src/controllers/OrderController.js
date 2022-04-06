@@ -1,54 +1,82 @@
 import OrderSerivce from '../services/OrderService.js';
+import ApiError from "../exceptions/ApiError.js"
 
 class OrderController{
     async create(req, res, next) {
-        try {
-            const order = await OrderSerivce.create(req.body);
-            
-            return res.json(order);
-        } catch(error) {
-            res.status(500).json(error.message);
+        const { customer_info, items, total} = req.body;
+
+        if(!customer_info){
+            next(ApiError.badRequest("You haven't sent the field 'customer_info'"));
+            return;
         }
+
+        if(!items){
+            next(ApiError.badRequest("You haven't sent the field 'items'"));
+            return;
+        }
+
+        if(!total){
+            next(ApiError.badRequest("You haven't sent the field 'total'"));
+            return;
+        }
+        
+        const order = await OrderSerivce.create(req.body);
+        return res.json(order);
     }
 
     async getAll(req, res, next) {
-        try {
-            const orders = await OrderSerivce.getAll();
-            
-            return res.json(orders);
-        } catch(error) {
-            res.status(500).json(error.message);
-        }
+        const orders = await OrderSerivce.getAll();
+        
+        return res.json(orders);
     }
 
     async getOne(req, res, next) {
-        try {
-            const order = await OrderSerivce.getOne(req.params.id);
-            
-            return res.json(order);
-        } catch(error) {
-            res.status(500).json(error.message);
+        const { id } = req.body;
+
+        if(!id){
+            next(ApiError.badRequest("You haven't sent the field 'id'"));
+            return;
         }
+
+        const order = await OrderSerivce.getOne(req.params.id);
+        
+        return res.json(order);
     }
 
     async update(req, res, next) {
-        try {
-            const updatedOrder = await OrderSerivce.update(req.body);
-            
-            return res.json(updatedOrder);
-        } catch(error) {
-            res.status(500).json(error.message);
+        const { customer_info, items, total} = req.body;
+
+        if(!customer_info){
+            next(ApiError.badRequest("You haven't sent the field 'customer_info'"));
+            return;
         }
+
+        if(!items){
+            next(ApiError.badRequest("You haven't sent the field 'items'"));
+            return;
+        }
+
+        if(!total){
+            next(ApiError.badRequest("You haven't sent the field 'total'"));
+            return;
+        }
+
+        const updatedOrder = await OrderSerivce.update(req.body);
+        
+        return res.json(updatedOrder);
     }
 
     async delete(req, res, next) {
-        try {
-            const order = await OrderSerivce.delete(req.params.id);
-           
-            return res.json(order);
-        } catch(error) {
-            res.status(500).json(error.message);
+        const { id } = req.body;
+
+        if(!id){
+            next(ApiError.badRequest("You haven't sent the field 'id'"));
+            return;
         }
+        
+        const order = await OrderSerivce.delete(req.params.id);
+           
+        return res.json(order);
     }
 }
 
