@@ -42,7 +42,7 @@ async function startApp() {
       console.log(`server running on port http://localhost:${PORT}`)
     );
   } catch (error) {
-    console.log(error); 
+    console.log(error);
   }
 }
 
