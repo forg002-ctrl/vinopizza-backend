@@ -1,6 +1,6 @@
 import MenuService from '../services/MenuService.js';
 
-class MenuController{
+class MenuController {
     async getAll(req, res, next) {
         const menu = await MenuService.getAll();
 

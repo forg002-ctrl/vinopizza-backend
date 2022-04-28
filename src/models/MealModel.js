@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Meal = new mongoose.Schema({
   image: { type: String, required: true },
-  discount: { type: Number, required: true, default: 0},
+  discount: { type: Number, required: true, default: 0 },
   price: { type: String, required: true },
   translation: {
     ru: {
@@ -18,9 +18,9 @@ const Meal = new mongoose.Schema({
       metrics: { type: String, required: true },
     }
   },
-  recommendedDrinks:[
+  recommendedDrinks: [
     {
-      drink:{type: mongoose.Schema.Types.ObjectId, ref: 'DrinksStuff'}
+      drink: { type: mongoose.Schema.Types.ObjectId, ref: 'DrinksStuff' }
     }
   ]
 });

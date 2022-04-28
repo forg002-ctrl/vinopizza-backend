@@ -1,30 +1,30 @@
 import MealService from '../services/MealService.js';
 import ApiError from "../exceptions/ApiError.js"
 
-class MealController{
+class MealController {
     async create(req, res, next) {
         const { price, translation, recommendedVines } = req.body;
-        const image = req.files; 
+        const image = req.files;
 
-        if(!price){
+        if (!price) {
             next(ApiError.badRequest("You haven't sent the field 'price'"));
             return;
         }
 
-        if(!translation){
+        if (!translation) {
             next(ApiError.badRequest("You haven't sent the field 'translation'"));
             return;
         }
 
-        if(!recommendedVines){
+        if (!recommendedVines) {
             next(ApiError.badRequest("You haven't sent the field 'recommendedVines'"));
             return;
         }
 
-        if(!image){
+        if (!image) {
             next(ApiError.badRequest('You have not send the image'));
             return;
-        }   
+        }
 
         req.body.translation = JSON.parse(req.body.translation);  //used to test form-data request from POSTMAN
         const meals = await MealService.create(req.body, req.files.image);
@@ -35,7 +35,7 @@ class MealController{
 
     async getAll(req, res, next) {
         const meals = await MealService.getAll();
-        
+
         res.status(200);
         return res.json(meals);
     }
@@ -43,32 +43,32 @@ class MealController{
     async getOne(req, res, next) {
         const { id } = req.params.id;
 
-        if(!id){
+        if (!id) {
             next(ApiError.badRequest('You have not send the id'));
-            return; 
+            return;
         }
 
         const meal = await MealService.getOne(req.params.id);
-        
+
         res.status(200);
         return res.json(meal);
     }
 
     async update(req, res, next) {
         const { price, translation } = req.body;
-        
-        if(!price){
+
+        if (!price) {
             next(ApiError.badRequest("You haven't sent the field 'price'"));
             return;
         }
 
-        if(!translation){
+        if (!translation) {
             next(ApiError.badRequest("You haven't sent the field 'translation'"));
             return;
         }
 
         const updatedMeal = await MealService.update(req.body);
-        
+
         res.status(200);
         return res.json(updatedMeal);
     }
@@ -76,13 +76,13 @@ class MealController{
     async delete(req, res, next) {
         const { id } = req.params.id;
 
-        if(!id){
+        if (!id) {
             next(ApiError.badRequest('You have not send the id'));
-            return; 
+            return;
         }
-        
+
         const meal = await MealService.delete(req.params.id);
-        
+
         res.status(200);
         return res.json(meal);
     }

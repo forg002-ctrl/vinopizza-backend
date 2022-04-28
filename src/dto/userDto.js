@@ -1,8 +1,8 @@
-class UserDto{
+class UserDto {
     username;
     id;
 
-    constructor(model){
+    constructor(model) {
         this.username = model.username;
         this.id = model._id;
     }

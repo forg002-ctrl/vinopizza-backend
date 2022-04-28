@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
 import dotenv from "dotenv/config";
-import menuRouter from "./routers/home.js";//?
+import menuRouter from "./routers/menu.js";//?
 import mealRouter from "./routers/drinks.js";//?
 import drinkRouter from "./routers/drinks.js";//?
 import categoryRouter from "./routers/category.js";
@@ -12,6 +14,25 @@ import orderRouter from "./routers/orders.js";
 import authorizationRouter from "./routers/authorization.js"
 
 import apiErrorHandler from "./midllewares/error-middleware.js";
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "VinoPizza API",
+      version: "1.0.0",
+      description: "Express Library API",
+    },
+    servers: [
+      {
+        url: "http://localhost:5000",
+      }
+    ]
+  },
+  apis: ["./routers/*.js"],
+}
+
+const specs = swaggerJSDoc(options);
 
 const app = express();
 const PORT = process.env.Port;
@@ -22,6 +43,7 @@ app.use(express.static('static'));
 app.use(fileUpload({}));
 app.use(cors());
 app.use(cookieParser());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use("/api/v1/meals", mealRouter);
 app.use("/api/v1/drinks", drinkRouter);

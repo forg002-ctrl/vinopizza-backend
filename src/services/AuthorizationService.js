@@ -73,12 +73,6 @@ class AuthorizationService {
             user: userDto
         }
     }
-
-    async test() {
-        const users = await UserModel.find();
-
-        return users;
-    }
 }
 
 export default new AuthorizationService();
