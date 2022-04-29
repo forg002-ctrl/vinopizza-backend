@@ -44,8 +44,8 @@ import authMiddleware from "../midllewares/auth-middleware.js";
 /**
  * @swagger
  * tags:
- *  name: authorization
- *  description: Operations with accounts and sessions
+ *  name: Authorization
+ *  description: Operations with accounts and JWT tokens
  */
 
  const router = express.Router();
@@ -54,9 +54,9 @@ import authMiddleware from "../midllewares/auth-middleware.js";
  * @swagger
  * /api/v1/authorization/registration:
  *  post:
- *      summary: Creates a new user
+ *      summary: Create a new user and sign in(create a pair of tokens)
  *      tags:
- *        - authorization
+ *        - Authorization
  *      requestBody:
  *          required: true
  *          content:
@@ -65,7 +65,7 @@ import authMiddleware from "../midllewares/auth-middleware.js";
  *                      $ref: '#/components/schemas/UserLoginData'     
  *      responses:
  *          200:
- *              description: Returns refreshToken in res.cookie and object
+ *              description: Return refreshToken in res.cookie and the object
  *              content:
  *                  apllication/json:
  *                      schema:
@@ -83,11 +83,12 @@ import authMiddleware from "../midllewares/auth-middleware.js";
  *                              refreshToken:
  *                                  type: string
  *                                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTExNTk4NjAsImV4cCI6MTY1MjAyMzg2MH0.ILj_-hkFCZ_S9P8JNaGSBwv4fazwhcF21jjiuVATTzQ
- *       
+ *          401:
+ *              description: Error - "You haven't sent all the necessary data"
  *          404:
- *              description: There is already a registred user with such 'username' - ${username}
+ *              description: Error - "There is already a registred user with such 'username' - ${username}"
  *          500:
- *              desription: Something went wrong          
+ *              description: Server Error - "Something went wrong"          
  */
 
 router.post('/registration', AuthorizationController.registration);
@@ -96,9 +97,9 @@ router.post('/registration', AuthorizationController.registration);
  * @swagger
  * /api/v1/authorization/login:
  *  post:
- *      summary: Check if the user exists in db and sign in
+ *      summary: Sign in(create a pair of tokens)
  *      tags:
- *        - authorization
+ *        - Authorization
  *      requestBody:
  *          required: true
  *          content:
@@ -107,7 +108,7 @@ router.post('/registration', AuthorizationController.registration);
  *                      $ref: '#/components/schemas/UserLoginData'     
  *      responses:
  *          200:
- *              description: Returns refreshToken in res.cookie and object
+ *              description: Return refreshToken in res.cookie and object
  *              content:
  *                  apllication/json:
  *                      schema:
@@ -125,11 +126,12 @@ router.post('/registration', AuthorizationController.registration);
  *                              refreshToken:
  *                                  type: string
  *                                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTExNTk4NjAsImV4cCI6MTY1MjAyMzg2MH0.ILj_-hkFCZ_S9P8JNaGSBwv4fazwhcF21jjiuVATTzQ
- *       
+ *          401:
+ *              description: Error - "You haven't sent all the necessary data"
  *          404:
- *              description: There isn't a user with such 'username' - ${username}/Uncorrect password
+ *              description: Error - "There isn't a user with such 'username' - ${username}" or Error - "Uncorrect password"
  *          500:
- *              description: Something went wrong          
+ *              description: Server Error - "Something went wrong"          
  */
 
 router.post('/login', AuthorizationController.login);
@@ -140,9 +142,9 @@ router.post('/login', AuthorizationController.login);
  *  post:
  *      security:
  *      - bearerAuth: []
- *      summary: Only authorized users have access to this method(paste the accessToken to the lock) - end the session(delete the refreshToken from db)
+ *      summary: End the session(delete the refreshToken from DB) - Only for authorized users (paste the accessToken to the lock) 
  *      tags:
- *        - authorization
+ *        - Authorization
  *      requestCookies:
  *          required: true
  *          content:
@@ -155,7 +157,7 @@ router.post('/login', AuthorizationController.login);
  *                          type: string
  *      responses:
  *          200:
- *              description: Returns object with "deleteCount":1
+ *              description: Return the object with field - "deleteCount" equals to 1
  *              content:
  *                  apllication/json:
  *                      schema:
@@ -171,11 +173,9 @@ router.post('/login', AuthorizationController.login);
  *                                  type: number
  *                                  example: 1
  *          401:
- *              description: You don't have access to this page, because you're an unauthorized user
- *          404:
- *              description: You haven't sent the refreshToken
+ *              description: Error - "You don't have access to this page, because you're an unauthorized user"
  *          500:
- *              description: Something went wrong          
+ *              description: Server Error - "Something went wrong"          
  */
 
 router.post('/logout', authMiddleware, AuthorizationController.logout);
@@ -183,12 +183,12 @@ router.post('/logout', authMiddleware, AuthorizationController.logout);
 /**
  * @swagger
  * /api/v1/authorization/refresh:
- *  post:
+ *  get:
  *      security:
  *      - bearerAuth: []
- *      summary: Only authorized users have access to this method(paste the accessToken to the lock) - refresh the pair of tokens(delete the tokens from db and create the new ones)
+ *      summary: Refresh the pair of tokens(delete the refreshToken from DB and create the new pair of tokens) - Only for authorized users (paste the accessToken to the lock) 
  *      tags:
- *        - authorization
+ *        - Authorization
  *      requestCookies:
  *          required: true
  *          content:
@@ -201,7 +201,7 @@ router.post('/logout', authMiddleware, AuthorizationController.logout);
  *                          type: string
  *      responses:
  *          200:
- *              description: Returns refreshToken in res.cookie and object
+ *              description: Return refreshToken in res.cookie and the object
  *              content:
  *                  apllication/json:
  *                      schema:
@@ -220,11 +220,9 @@ router.post('/logout', authMiddleware, AuthorizationController.logout);
  *                                  type: string
  *                                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTExNTk4NjAsImV4cCI6MTY1MjAyMzg2MH0.ILj_-hkFCZ_S9P8JNaGSBwv4fazwhcF21jjiuVATTzQ
  *          401:
- *              description: You don't have access to this page, because you're an unauthorized user
- *          404:
- *              description: You haven't sent the refreshToken
+ *              description: Error - "You don't have access to this page, because you're an unauthorized user"
  *          500:
- *              description: Something went wrong             
+ *              description: Server Error - "Something went wrong"             
  */
 
 router.get('/refresh', authMiddleware, AuthorizationController.refresh);

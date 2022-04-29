@@ -3,17 +3,17 @@ import ApiError from "../exceptions/ApiError.js"
 
 class CategoryController {
   async create(req, res, next) {
-    const { translation } = req.body;
+    const translation  = req.body;
 
     if (!translation) {
       next(ApiError.badRequest('You have not send all the necessary data'));
       return;
     }
 
-    const categories = await CategoryService.create(translation);
+    const category = await CategoryService.create(translation);
 
     res.status(200);
-    return res.json(categories);
+    return res.json(category);
   }
 
   async getAll(req, res, next) {
@@ -24,42 +24,43 @@ class CategoryController {
   }
 
   async getOne(req, res, next) {
-    const { id } = req.params.id;
+    const category = await CategoryService.getOne(req.params.id);
 
-    if (!id) {
-      next(ApiError.badRequest('You have not send all the necessary data'));
+    if (!category) {
+      next(ApiError.badRequest("Wrong id"));
       return;
     }
-
-    const category = await CategoryService.getOne(id);
 
     res.status(200);
     return res.json(category);
   }
 
   async update(req, res, next) {
-    const { translation } = req.body;
+    const categoryToUdpate = req.body;
 
-    if (!translation) {
+    if (!categoryToUdpate.translation || !categoryToUdpate._id) {
       next(ApiError.badRequest('You have not send all the necessary data'));
       return;
     }
 
-    const updatedCategory = await CategoryService.update(translation);
+    const updatedCategory = await CategoryService.update(categoryToUdpate);
+
+    if (!updatedCategory) {
+      next(ApiError.badRequest("Wrong id"));
+      return;
+    }
 
     res.status(200);
     return res.json(updatedCategory);
   }
 
   async delete(req, res, next) {
-    const { id } = req.params.id;
+    const category = await CategoryService.delete(req.params.id);
 
-    if (!id) {
-      next(ApiError.badRequest('You have not send all the necessary data'));
+    if (!category) {
+      next(ApiError.badRequest("Wrong id"));
       return;
     }
-
-    const category = await CategoryService.delete(id);
 
     res.status(200);
     return res.json(category);

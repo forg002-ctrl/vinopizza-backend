@@ -7,13 +7,13 @@ import DrinkService from "../services/DrinkService.js";
 class CategoryService {
   async create(category) {
     const createdCategories = await Categories.create(category);
-    
+
     return createdCategories;
   }
 
   async getAll() {
     const categories = await Categories.find();
-    
+
     return categories;
   }
 
@@ -22,7 +22,7 @@ class CategoryService {
       throw new Error("не указан ID");
     }
     const category = await Categories.findById(id);
-    
+
     return category;
   }
 
@@ -30,40 +30,40 @@ class CategoryService {
     if (!category._id) {
       throw new Error("не указан ID");
     }
-    
-    const oldCategory = await Categories.findById(category._id);    
 
-    if(oldCategory.translation.ru.name != category.translation.ru.name){
-        const mealsToChange = await Meal.find(oldCategory.translation.ru);
-        const drinksToChange = await Drink.find(oldCategory.translation.ru)
+    const oldCategory = await Categories.findById(category._id);
 
-        if(mealsToChange){
-          mealsToChange.forEach(meal => {
-            meal.translation.ru.category = category.translation.ru.name;
-            MealService.update(meal);
-          }); 
-        }
+    if (oldCategory.translation.ru.name != category.translation.ru.name) {
+      const mealsToChange = await Meal.find(oldCategory.translation.ru);
+      const drinksToChange = await Drink.find(oldCategory.translation.ru)
 
-        if(drinksToChange){
-          drinksToChange.forEach(drink => {
-            drink.translation.ru.category = category.translation.ru.name;
-            DrinkService.update(drink);
-          })
-        }
+      if (mealsToChange) {
+        mealsToChange.forEach(meal => {
+          meal.translation.ru.category = category.translation.ru.name;
+          MealService.update(meal);
+        });
+      }
+
+      if (drinksToChange) {
+        drinksToChange.forEach(drink => {
+          drink.translation.ru.category = category.translation.ru.name;
+          DrinkService.update(drink);
+        })
+      }
     }
 
-    if(oldCategory.translation.ro.name != category.translation.ro.name){
+    if (oldCategory.translation.ro.name != category.translation.ro.name) {
       const mealsToChange = await Meal.find(oldCategory.translation.ro);
       const drinksToChange = await Drink.find(oldCategory.translation.ro)
 
-      if(mealsToChange){
+      if (mealsToChange) {
         mealsToChange.forEach(meal => {
           meal.translation.ro.category = category.translation.ro.name;
           MealService.update(meal);
-        }); 
+        });
       }
 
-      if(drinksToChange){
+      if (drinksToChange) {
         drinksToChange.forEach(drink => {
           drink.translation.ro.category = category.translation.ro.name;
           DrinkService.update(drink);
@@ -72,9 +72,9 @@ class CategoryService {
     }
 
     const updatedCategory = await Categories.findByIdAndUpdate(
-        category._id,
-        category,
-        { new: true }
+      category._id,
+      category,
+      { new: true }
     );
 
     return updatedCategory;
@@ -85,17 +85,17 @@ class CategoryService {
       throw new Error("не указан ID");
     }
 
-    const categoryToDelete = await Categories.findByIdAndDelete(id);  
+    const categoryToDelete = await Categories.findByIdAndDelete(id);
     const mealsToDelete = await Meal.find(categoryToDelete.translation.ro);
     const drinksToDelete = await Drink.find(categoryToDelete.translation.ro);
 
-    if(mealsToDelete){
+    if (mealsToDelete) {
       mealsToDelete.forEach(meal => {
         MealService.delete(meal._id)
       })
     }
 
-    if(drinksToDelete){
+    if (drinksToDelete) {
       drinksToDelete.forEach(meal => {
         DrinkService.delete(meal._id)
       })

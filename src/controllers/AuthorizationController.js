@@ -8,14 +8,8 @@ class AuthorizationController {
         try {
             const { username, password } = req.body;
 
-            console.log(req.body);
-            if (!username) {
-                next(ApiError.badRequest("You haven't filled the field 'username'"));
-                return;
-            }
-
-            if (!password) {
-                next(ApiError.badRequest("You haven't filled the field 'password'"));
+            if (!username || !password) {
+                next(ApiError.badRequest("You haven't sent all the necessary data"));
                 return;
             }
 
@@ -35,13 +29,8 @@ class AuthorizationController {
         try {
             const { username, password } = req.body;
 
-            if (!username) {
-                next(ApiError.badRequest("You haven't filled the field 'username'"));
-                return;
-            }
-
-            if (!password) {
-                next(ApiError.badRequest("You haven't filled the field 'password'"));
+            if (!username || !password) {
+                next(ApiError.badRequest("You haven't sent all the necessary data"));
                 return;
             }
 
@@ -60,7 +49,7 @@ class AuthorizationController {
             const { refreshToken } = req.cookies;
 
             if (!refreshToken) {
-                next(ApiError.badRequest("You haven't sent the refreshToken"));
+                next(ApiError.unauthorizedUser());
                 return;
             }
 

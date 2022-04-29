@@ -7,7 +7,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 import dotenv from "dotenv/config";
 import menuRouter from "./routers/menu.js";//?
-import mealRouter from "./routers/drinks.js";//?
+import mealRouter from "./routers/meal.js";//?
 import drinkRouter from "./routers/drinks.js";//?
 import categoryRouter from "./routers/category.js";
 import orderRouter from "./routers/orders.js";
@@ -35,7 +35,7 @@ const options = {
 const specs = swaggerJSDoc(options);
 
 const app = express();
-const PORT = process.env.Port;
+const PORT = process.env.Port || 5000;
 const DB_URL = process.env.Database_URL;
 
 app.use(express.json());
