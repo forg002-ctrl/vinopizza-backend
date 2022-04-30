@@ -45,8 +45,10 @@ import authMiddleware from "../midllewares/auth-middleware.js";
 /**
  * @swagger
  * tags:
- *  name: Category
- *  description: CRUD methods for Category Model(Schema)
+ *  - name: Category
+ *    description: CRUD methods for Category Model(Schema)
+ *  - name: CategoryDEV
+ *    description: CRUD methods for Category Model(Schema) DEV
  */
 
 const router = express.Router();
@@ -97,11 +99,54 @@ router.post('/', authMiddleware, CategoryController.create);
 
 /**
  * @swagger
+ * /api/v1/categories/dev:
+ *  post:
+ *      summary: Create a new category 
+ *      tags:
+ *      - CategoryDEV
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Category'     
+ *      responses:
+ *          200:
+ *              description: Return the new created Category object
+ *              content:
+ *                  apllication/json:
+ *                      schema:
+ *                          allOf:
+ *                          - $ref: '#/components/schemas/Category'
+ *                          - type: object
+ *                            requiered:
+ *                            - _id
+ *                            - __v
+ *                            properties:
+ *                                _id:
+ *                                    type: string
+ *                                    example: 626bdaac2ba177868d0fd79e
+ *                                __v:
+ *                                    type: number
+ *                                    example: 0
+ *          401:
+ *              description: Error - "You don't have access to this page, because you're an unauthorized user"
+ *          404:
+ *              description: Error - "You haven't sent all the necessary data"
+ *          500:
+ *              description: Server Error - "Something went wrong"          
+ */
+
+router.post('/dev', CategoryController.create);
+
+/**
+ * @swagger
  * /api/v1/categories:
  *  get:
  *      summary: Return all the Category objects from DB
  *      tags:
- *      - Category   
+ *      - Category 
+ *      - CategoryDEV  
  *      responses:
  *          200:
  *              description: Return an array of Category objects from DB
@@ -135,7 +180,8 @@ router.get('/', CategoryController.getAll);
  *  get:
  *      summary: Return the Cetegory object with the given id from DB
  *      tags:
- *      - Category   
+ *      - Category 
+ *      - CategoryDEV  
  *      parameters:
  *      - in: path
  *        name: id
@@ -223,6 +269,56 @@ router.put('/', authMiddleware, CategoryController.update);
 
 /**
  * @swagger
+ * /api/v1/categories/dev:
+ *  put:
+ *      summary: Update the Category object
+ *      tags:
+ *      - CategoryDEV
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      allOf:
+ *                      - $ref: '#/components/schemas/Category'
+ *                      - type: object
+ *                        required:
+ *                        - _id
+ *                        properties:
+ *                            _id:
+ *                                type: string
+ *                                example: 626bdaac2ba177868d0fd79e
+ *      responses:
+ *          200:
+ *              description: Return the updated Category object
+ *              content:
+ *                  apllication/json:
+ *                      schema:
+ *                          allOf:
+ *                          - $ref: '#/components/schemas/Category'
+ *                          - type: object
+ *                            requiered:
+ *                            - _id
+ *                            - __v
+ *                            properties:
+ *                                _id:
+ *                                    type: string
+ *                                    example: 626bdaac2ba177868d0fd79e
+ *                                __v:
+ *                                    type: number
+ *                                    example: 0
+ *          401:
+ *              description: Error - "You don't have access to this page, because you're an unauthorized user"
+ *          404:
+ *              description: Error - "You haven't sent all the necessary data" or Error - "Wrong id"
+ *          500:
+ *              description: Server Error - "Something went wrong"          
+ */
+
+router.put('/dev', CategoryController.update);
+
+/**
+ * @swagger
  * /api/v1/categories/{id}:
  *  delete:
  *      security:
@@ -264,5 +360,47 @@ router.put('/', authMiddleware, CategoryController.update);
  */
 
 router.delete('/:id', authMiddleware, CategoryController.delete);
+
+/**
+ * @swagger
+ * /api/v1/categories/dev/{id}:
+ *  delete:
+ *      summary: Delete the Category object with the given id from DB
+ *      tags:
+ *      - CategoryDEV   
+ *      parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        required: true
+ *        description: Numeric ID of the category to get    
+ *      responses:
+ *          200:
+ *              description: Return the deleted Category object
+ *              content:
+ *                  apllication/json:
+ *                      schema:
+ *                          allOf:
+ *                          - $ref: '#/components/schemas/Category'
+ *                          - type: object
+ *                            requiered:
+ *                            - _id
+ *                            - __v
+ *                            properties:
+ *                                _id:
+ *                                    type: string
+ *                                    example: 626bdaac2ba177868d0fd79e
+ *                                __v:
+ *                                    type: number
+ *                                    example: 0
+ *          401:
+ *              description: Error - "You don't have access to this page, because you're an unauthorized user"
+ *          404:
+ *              description: Error - "Wrong id"
+ *          500:
+ *              description: Server Error - "Something went wrong"        
+ */
+
+router.delete('/dev/:id', CategoryController.delete);
 
 export default router;  

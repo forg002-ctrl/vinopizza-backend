@@ -3,18 +3,18 @@ import Meals from '../models/MealModel.js';
 import Categories from '../models/CategoryModel.js';
 
 
-class MenuService{
+class MenuService {
     async getAll() {
         const categories = await Categories.find();
-        const products = await Meals.find();
+        const meals = await Meals.find();
         const drinks = await Drinks.find();
-        
+
         const menu = {
             "categories": categories,
-            "products": products,
+            "meals": meals,
             "drinks": drinks
         }
-        
+
         return menu;
     }
 }
