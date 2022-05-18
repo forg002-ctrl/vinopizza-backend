@@ -1,7 +1,7 @@
 This is a [Node.js](https://nodejs.org/en/) project, which was made using [Express](https://expressjs.com/) framework and [MongoDB](https://www.mongodb.com/).
 ## Getting Started
 
-First, download the necessary libraries:
+First, download necessary libraries:
 
 ```bash
 npm i
@@ -9,7 +9,7 @@ npm i
 yarn install
 ```
 
-Now you can run the development server:
+First, run the development server:
 
 ```bash
 npm start
