@@ -43,7 +43,7 @@ app.use(express.static('static'));
 app.use(fileUpload({}));
 app.use(cors());
 app.use(cookieParser());
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/api/v1/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use("/api/v1/meals", mealRouter);
 app.use("/api/v1/drinks", drinkRouter);
